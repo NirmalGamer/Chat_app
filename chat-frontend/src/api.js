@@ -1,11 +1,12 @@
 import axios from "axios";
 
-const API = axios.create({
-  baseURL: "http://localhost:5000", // or wherever your backend runs
-});
+const baseURL = "www.backend.com/messages";
 
 // Function to send a message
-export const sendMessage = (newMessage) => API.post("/messages", newMessage);
+export const sendMessage = (newMessage) =>
+  axios.post(baseURL, newMessage, {
+  });
 
 // Function to get messages
-export const getMessages = () => API.get("/messages");
+export const getMessages = () =>
+  axios.get(baseURL);

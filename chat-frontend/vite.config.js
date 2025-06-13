@@ -10,8 +10,7 @@ export default defineConfig({
     cors: true, // or you can put the full Ngrok host here
     strictPort: true,
     allowedHosts: [
-      'b1b9-2409-40c4-35a-c917-b86b-3075-b81f-38c4.ngrok-free.app'
-    ]
-
+      'pending'
+    ],
   }
 })

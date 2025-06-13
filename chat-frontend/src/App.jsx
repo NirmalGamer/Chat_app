@@ -1,32 +1,13 @@
-import { useEffect, useState } from "react";
-import { sendMessage, getMessages } from "./api";
-import Form from "./Form"
+import { Routes, Route } from "react-router-dom";
+import ChatPage from "./chatpage"
 
 function App() {
 
-  const [messages, setMessages] = useState([]);
-
-  useEffect(() => {
-    loadMessages();
-  }, []);
-
-  async function loadMessages() {
-    setInterval(async () => {
-      const res = await getMessages();
-      setMessages(res.data);
-    }, 1000);
-  }
-
   return (
-    <>
-      <Form sendmsg={sendMessage} />
-
-      <ul>
-        {messages.map((msg) => (
-          <li key={msg._id}><strong>{msg.username}</strong>: {msg.message}</li>
-        ))}
-      </ul>
-    </>
+      <Routes>
+        <Route path="/" element={<ChatPage />} />
+        <Route path="/login" element={<LoginPage />} />
+      </Routes>
   );
 }
 
