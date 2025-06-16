@@ -10,7 +10,6 @@ function ChatPage() {
   const interval = setInterval(async () => {
     const res = await getMessages();
     setMessages(res.data);
-    console.log(messages)
   }, 1000);
 
   return () => clearInterval(interval); // cleanup
