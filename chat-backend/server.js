@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const messageRoutes = require('./routes/messageRoutes');
+const apiRoutes = require('./routes/auth');
+const find_user = require('./routes/get_user');
 require("dotenv").config()
 const PORT = process.env.PORT || 5000;
 
@@ -12,8 +14,9 @@ app.use(express.json());
 
 mongoose.connect(process.env.MONGO_URI);
 
-app.use('/messages', messageRoutes);
-app.use('/api', require('./routes/auth'));
+app.use('/api/messages', messageRoutes);
+app.use('/api', apiRoutes);
+app.use('/find', find_user);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

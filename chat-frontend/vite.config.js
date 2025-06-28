@@ -9,7 +9,7 @@ export default defineConfig({
     cors: true,
     strictPort: true,
     allowedHosts: [
-      'pending'
+      '28e5-202-142-121-164.ngrok-free.app'
     ],
   }
 })

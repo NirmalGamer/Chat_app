@@ -17,7 +17,10 @@ router.post('/signup', async (req, res) => {
   await user.save();
 
   const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
-  res.json({ token });
+  res.json({ token, user: {
+    _id: user._id, 
+    name: user.username,
+  } });
 });
 
 // Login route
@@ -30,7 +33,10 @@ router.post('/login', async (req, res) => {
   if (!match) return res.status(400).json({ msg: 'Incorrect password' });
 
   const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
-  res.json({ token });
+  res.json({ token, user: {
+    _id: user._id,          
+    name: user.username,
+  } });
 });
 
 module.exports = router;

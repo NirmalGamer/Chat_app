@@ -1,19 +1,44 @@
+// src/api/chatApi.js
 import axios from "axios";
+
+const backendUrl = "http://localhost:5000";
 const token = localStorage.getItem("token");
-const baseURL = "http://localhost:5000/messages";
 
-// Function to send a message
-export const sendMessage = (newMessage) =>
-  axios.post(baseURL, newMessage, {
-    headers: {
-    Authorization: `Bearer ${token}`
-    }
-  });
-
-// Function to get messages
-export const getMessages = () =>
-  axios.get(baseURL, {
+const axiosInstance = axios.create({
+  baseURL: backendUrl,
   headers: {
-    Authorization: `Bearer ${token}`
-  }
+    Authorization: `Bearer ${token}`,
+  },
 });
+
+export const findUserByUsername = async (username) => {
+  const { data } = await axiosInstance.get("/find/finduser", {
+    params: { username },
+  });
+  return data.recepient;
+};
+
+export const loadMessages = async (userId1, userId2) => {
+  const { data } = await axiosInstance.get(`/api/messages/history/${userId1}/${userId2}`);
+  return data;
+};
+
+export const sendMessage = async ({ sender, recipient, text, files }) => {
+  const fd = new FormData();
+  fd.append("sender", sender);
+  fd.append("recipient", recipient);
+  fd.append("text", text);
+  files.forEach((f) => fd.append("files", f));
+
+  const { data } = await axiosInstance.post("/api/messages/send", fd, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return data;
+};
+
+export const loginUser = async (formData) => {
+  const res = await axiosInstance.post(`${backendUrl}/api/login`, formData);
+  return res.data;
+};

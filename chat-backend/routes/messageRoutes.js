@@ -1,26 +1,45 @@
-// routes/messageRoutes.js
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+const { storage } = require('../cloudinary');
+const upload = multer({ storage });
+
 const Message = require('../models/Message');
 
-router.post('/', async (req, res) => {
-  console.log('POST body:', req.body);
-
+router.post('/send', upload.array('files'), async (req, res) => {
   try {
-    const newMessage = await Message.create(req.body);
-    res.status(201).json(newMessage);
+    const { sender, recipient, text } = req.body;
+    const fileData = req.files?.map(f => f.path) || [];
+
+    const message = new Message({
+      sender,
+      recipient,
+      text,
+      files: fileData,
+    });
+
+    console.log("Received file:", req.files);
+    await message.save();
+    res.status(200).json(message);
   } catch (err) {
-    console.error('❌ Error creating message:', err);
-    res.status(500).json({ error: 'Server error', details: err.message });
+    console.error("Error sending message:", err);
+    res.status(500).json({ error: "Failed to send message" });
   }
 });
 
-router.get('/', async (req, res) => {
+router.get('/history/:user1/:user2', async (req, res) => {
+  const { user1, user2 } = req.params;
   try {
-    const messages = (await Message.find().sort({ timestamp: 1 })).reverse();
+    const messages = await Message.find({
+      $or: [
+        { sender: user1, recipient: user2 },
+        { sender: user2, recipient: user1 }
+      ]
+    }).sort({ timestamp: 1 });
+
     res.json(messages);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch messages' });
+    res.status(500).json({ error: "Failed to fetch messages" });
   }
 });
 
