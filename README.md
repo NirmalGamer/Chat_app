@@ -66,3 +66,19 @@ npm run dev
 cd chat-backend
 npm install
 npm run dev
+
+## Environment Variables
+
+Create a `.env` file in backend directory:
+
+### Backend (`chat-backend/.env`)
+
+```env
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+
+# Cloudinary config
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
