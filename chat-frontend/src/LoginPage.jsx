@@ -10,6 +10,10 @@ const Login = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const handleSignup = () => {
+    navigate("/signup");
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -24,22 +28,32 @@ const Login = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        name="username"
-        placeholder="Username"
-        value={form.username}
-        onChange={handleChange}
-      />
-      <input
-        name="password"
-        type="password"
-        placeholder="Password"
-        value={form.password}
-        onChange={handleChange}
-      />
-      <button type="submit">Login</button>
-    </form>
+    <>
+    Enter Login details <br></br>
+      <form onSubmit={handleSubmit}>
+        <input
+          name="username"
+          placeholder="Username"
+          value={form.username}
+          onChange={handleChange}
+        />
+        <input
+          name="password"
+          type="password"
+          placeholder="Password"
+          value={form.password}
+          onChange={handleChange}
+        />
+        <button type="submit">Login</button>
+      </form>
+      Don't have an account? <br></br>
+      <button
+        onClick={handleSignup}
+        className="mt-4 text-sm text-white hover:underline"
+      >
+        Sign up
+      </button>
+    </>
   );
 };
 

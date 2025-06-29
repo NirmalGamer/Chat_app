@@ -4,6 +4,7 @@ import SearchUser from "./SearchUser";
 import MessageList from "./MessageList";
 import MessageForm from "./MessageForm";
 import { findUserByUsername, loadMessages, sendMessage } from "./api";
+import { useNavigate } from "react-router-dom";
 
 const currentUser = JSON.parse(localStorage.getItem("user"));
 const currentUserId = currentUser?._id;
@@ -17,7 +18,7 @@ export default function ChatPage() {
   const [searchError, setSearchError] = useState("");
   const bottomRef = useRef(null);
   const [shouldScroll, setShouldScroll] = useState(true);
-
+  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -81,6 +82,10 @@ export default function ChatPage() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  const handleLogout = () => {
+    navigate("/logout");
+  };
+
   return (
     <div className="flex flex-col h-screen p-4 flex-1 overflow-y-auto" ref={bottomRef}>
       <SearchUser
@@ -89,6 +94,12 @@ export default function ChatPage() {
         handleSearch={handleSearch}
         searchError={searchError}
       />
+      <button
+        onClick={handleLogout}
+        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+      >
+        Logout
+      </button>
 
       {recipient && <ChatHeader recipient={recipient} />}
       {recipient?._id?
