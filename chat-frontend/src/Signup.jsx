@@ -3,7 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const Signup = ({ onSignup }) => {
+const Signup = () => {
   const [form, setForm] = useState({ username: "", password: "" });
   const navigate = useNavigate();
 
@@ -14,7 +14,7 @@ const Signup = ({ onSignup }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("https://1fab9922-3008-4ff5-af8d-51a4c03a1fec-00-2xmmqblzt8srp.sisko.replit.dev/api/signup", form);
+      const res = await axios.post("http://localhost:5000/api/signup", form);
       console.log(res.data)
       localStorage.setItem("token", res.data.token); 
       localStorage.setItem("user", JSON.stringify(res.data.user));

@@ -73,19 +73,25 @@ export default function ChatPage() {
 
   useEffect(() => {
     loadChatHistory(false);
-    const intervalId = setInterval(loadChatHistory, 3000);
+    const intervalId = setInterval(loadChatHistory, 1000);
     return () => clearInterval(intervalId);
   }, [recipient?._id]);
 
+   useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   return (
-    <div className="flex flex-col h-screen p-4">
+    <div className="flex flex-col h-screen p-4 flex-1 overflow-y-auto" ref={bottomRef}>
       <SearchUser
         searchUsername={searchUsername}
         setSearchUsername={setSearchUsername}
         handleSearch={handleSearch}
         searchError={searchError}
       />
+
       {recipient && <ChatHeader recipient={recipient} />}
+      {recipient?._id?
       <MessageList
         messages={messages}
         currentUserId={currentUserId}
@@ -93,18 +99,19 @@ export default function ChatPage() {
         recipientId={recipient?._id}
         recipientname={recipient?.name}
         bottomRef={bottomRef}
-      />
-      <MessageForm
-        currentUserId={currentUserId}
-        recipientId={recipient?._id}
-        onMessageSent={loadChatHistory}
-        text={text}
-        setText={setText}
-        files={files}
-        setFiles={setFiles}
-        handleSend={handleSend}
-      />
-      <div ref={bottomRef} />
+      />: ""}
+
+      {recipient?._id?
+        <MessageForm
+          currentUserId={currentUserId}
+          recipientId={recipient?._id}
+          onMessageSent={loadChatHistory}
+          text={text}
+          setText={setText}
+          files={files}
+          setFiles={setFiles}
+          handleSend={handleSend}
+        /> : <h1 className="text-3xl font-bold">have a convo fr</h1>}
     </div>
   );
 }

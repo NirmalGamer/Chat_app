@@ -1,14 +1,17 @@
-// src/api/chatApi.js
 import axios from "axios";
 
 const backendUrl = "http://localhost:5000";
-const token = localStorage.getItem("token");
 
 const axiosInstance = axios.create({
-  baseURL: backendUrl,
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
+  baseURL: backendUrl
+  });
+
+axiosInstance.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 export const findUserByUsername = async (username) => {
@@ -39,6 +42,9 @@ export const sendMessage = async ({ sender, recipient, text, files }) => {
 };
 
 export const loginUser = async (formData) => {
-  const res = await axiosInstance.post(`${backendUrl}/api/login`, formData);
+  const res = await axios.post(
+    `${backendUrl}/api/login`,
+    formData
+  );
   return res.data;
 };
